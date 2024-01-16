@@ -1,9 +1,13 @@
 package Tests;
 
+import static org.testng.Assert.assertEquals;
+
 import java.time.Duration;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.ElementClickInterceptedException;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -16,6 +20,7 @@ public class StandAloneTest
 	public static void main(String[] args) 
 	{
 		String product="Zara coat 3";
+		String country="India";
 		WebDriver driver= new ChromeDriver();
 		driver.get("https://rahulshettyacademy.com/client");
 		driver.manage().window().maximize();
@@ -49,14 +54,52 @@ public class StandAloneTest
 		WebElement toastMessage=driver.findElement(By.xpath("//div[contains(@class,'toast-message')]"));
 		String actualToastMsg=toastMessage.getText();
 		Assert.assertEquals(actualToastMsg, "Product Added To Cart");
+		wait.until(ExpectedConditions.invisibilityOf(toastMessage));
 		
 		driver.findElement(By.xpath("//button[@routerlink='/dashboard/cart']")).click();
 		
 		String CartProductName=driver.findElement(By.xpath("//div[@class='cartSection'] //h3")).getText();
 		String OrderNumber=driver.findElement(By.xpath("//div[@class='cartSection'] //p[@class='itemNumber']")).getText();
 		
-		Assert.assertEquals(CartProductName, product);
-		driver.findElement(By.xpath("//button[normalize-space()='Checkout']")).click();
+		Assert.assertEquals(CartProductName, product.toUpperCase());
+		wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[normalize-space()='Checkout']")));
+		try {
+			driver.findElement(By.xpath("//button[normalize-space()='Checkout']")).click();
+		}catch(ElementClickInterceptedException e) {
+			JavascriptExecutor js=(JavascriptExecutor) driver;
+			js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//button[normalize-space()='Checkout']")));
+			System.out.println("Unable to click on UI so attempted through JS");
+		}
+		
+		driver.findElement(By.xpath("//div[contains(.,'CVV Code') and @class='title']/following-sibling::input")).sendKeys("0997");
+		driver.findElement(By.xpath("//div[contains(.,'Name on Card') and @class='title']/following-sibling::input")).sendKeys("ABC");
+
+		driver.findElement(By.xpath("//input[@placeholder='Select Country']")).sendKeys(country);
+		
+		wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath("//section[@class='ta-results list-group ng-star-inserted'] //button"))));
+		List<WebElement> CountryOptions=driver.findElements(By.xpath("//section[@class='ta-results list-group ng-star-inserted'] //button"));
+		
+		for(WebElement opt:CountryOptions)
+		{
+			String countryName=opt.getText();
+			if(countryName.equals(country))
+			{
+				opt.click();
+			}
+		}
+		
+		WebElement submitBtn=driver.findElement(By.xpath("//a[@class='btnn action__submit ng-star-inserted']"));
+		try {
+			submitBtn.click();
+		}catch(ElementClickInterceptedException e)
+		{
+			JavascriptExecutor js=(JavascriptExecutor) driver;
+			js.executeScript("arguments[0].click();",submitBtn);
+			System.out.println("Unable to click on UI so attempted through JS");
+		}
+		String actualOrderNum=driver.findElement(By.xpath("//label[@class='ng-star-inserted']")).getText();	
+		Assert.assertEquals(actualOrderNum, OrderNumber);
+		driver.close();
 	}
 
 }
