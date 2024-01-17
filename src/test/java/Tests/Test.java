@@ -15,7 +15,9 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
-public class StandAloneTest
+import PageObjects.LandingPage;
+
+public class Test
 {
 	public static void main(String[] args) 
 	{
@@ -25,15 +27,17 @@ public class StandAloneTest
 		driver.manage().window().maximize();
 		//implicit wait
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-		driver.get("https://rahulshettyacademy.com/client");
-
-		WebElement txt_UserName=driver.findElement(By.xpath("//input[@id='userEmail']"));
-		WebElement txt_Password=driver.findElement(By.xpath("//input[@type='password']"));
-		WebElement btn_Login=driver.findElement(By.id("login"));
+		LandingPage landingPage=new LandingPage(driver);
+		landingPage.goTo();
+		landingPage.login("pathan@gmail.com", "Abcd@1234");
 		
-		txt_UserName.sendKeys("pathan@gmail.com");
-		txt_Password.sendKeys("Abcd@1234");
-		btn_Login.click();
+//		WebElement txt_UserName=driver.findElement(By.xpath("//input[@id='userEmail']"));
+//		WebElement txt_Password=driver.findElement(By.xpath("//input[@type='password']"));
+//		WebElement btn_Login=driver.findElement(By.id("login"));
+//		
+//		txt_UserName.sendKeys("pathan@gmail.com");
+//		txt_Password.sendKeys("Abcd@1234");
+//		btn_Login.click();
 		
 //		driver.findElement(By.xpath("//b[normalize-space()='"+product.toUpperCase()+"']/parent::h5/parent::div //button[text()=' Add To Cart']")).click();
 		List<WebElement> ProductsName=driver.findElements(By.xpath("//div[@class='card-body']/h5/b"));
