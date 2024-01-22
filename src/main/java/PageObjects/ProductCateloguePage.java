@@ -30,6 +30,7 @@ public class ProductCateloguePage extends AbstractComponents{
 	@FindBy(xpath="//div[contains(@class,'toast-message')]")
 	private WebElement ToastMsg;
 	
+	
 //	By msg=By.xpath("//div[contains(@class,'toast-message')]");
 	
 	public void AddToCart(String Product)
@@ -51,5 +52,7 @@ public class ProductCateloguePage extends AbstractComponents{
 		waitUntillElementGetsDisappear(ToastMsg, 10);
 		return msg;
 	}
+	
+	
 	
 }
