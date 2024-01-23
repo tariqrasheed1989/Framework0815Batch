@@ -36,9 +36,12 @@ public class CartPage extends AbstractComponents{
 		return OrderNumber.getText();		
 	}
 	
-	public void checkout() {
+	public PaymentConfirmationPage checkout() {
 		waitUnitlElementIsClickable(Checkout, 10);
 		clickElement(Checkout,"CheckOut button");
+		
+		PaymentConfirmationPage paymentConfirmationPage=new PaymentConfirmationPage(driver);
+		return paymentConfirmationPage;
 	}
 
 }

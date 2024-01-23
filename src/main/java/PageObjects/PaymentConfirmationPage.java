@@ -52,8 +52,9 @@ public class PaymentConfirmationPage extends AbstractComponents{
 		}
 	}
 	
-	public void placeOrder()
+	public OrderConfirmationPage placeOrder()
 	{
 		clickElement(PlaceOrderButton, "Place Order Button");
+		return new OrderConfirmationPage(driver);
 	}
 }

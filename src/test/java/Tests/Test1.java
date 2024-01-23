@@ -1,6 +1,7 @@
 package Tests;
 
 
+import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
 
@@ -11,47 +12,38 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
+import org.testng.annotations.Test;
 
 import PageObjects.CartPage;
 import PageObjects.LandingPage;
 import PageObjects.OrderConfirmationPage;
 import PageObjects.PaymentConfirmationPage;
 import PageObjects.ProductCateloguePage;
+import testBase.Base;
 
-public class Test
+public class Test1 extends Base
 {
-	public static void main(String[] args) 
+	@Test
+	public void PlaceOrder() throws IOException 
 	{
 		String product="Zara coat 3";
-		String country="India";
-		WebDriver driver= new ChromeDriver();
-		driver.manage().window().maximize();
-		//implicit wait
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-		LandingPage landingPage=new LandingPage(driver);
-		landingPage.goTo();
-		landingPage.login("pathan@gmail.com", "Abcd@1234");
-		
-		ProductCateloguePage productCateloguePage=new ProductCateloguePage(driver);
+		String country="India";		
+		LandingPage landingPage=launchApplication();
+		ProductCateloguePage productCateloguePage=landingPage.login("pathan@gmail.com", "Abcd@1234");
 		productCateloguePage.AddToCart(product);
 		String ActualToastMsg=productCateloguePage.getToastMessage();
 		Assert.assertEquals(ActualToastMsg, "Product Added To Cart");
-		productCateloguePage.goToCart();
-		CartPage cartPage=new CartPage(driver);
+		CartPage cartPage=productCateloguePage.goToCart();	
 		String ActualCartProductName=cartPage.getCartProductName();
 		String OrderNumber = cartPage.getOrderNum();
 		Assert.assertEquals(ActualCartProductName, product.toUpperCase());
-		cartPage.checkout();
-		PaymentConfirmationPage paymentConfirmationPage=new PaymentConfirmationPage(driver);
+		PaymentConfirmationPage paymentConfirmationPage=cartPage.checkout();
 		paymentConfirmationPage.paymentDetails("0997", "Sachin");
 		paymentConfirmationPage.selectCountry(country);
-		paymentConfirmationPage.placeOrder();
-		OrderConfirmationPage orderConfirmationPage=new OrderConfirmationPage(driver);
+		OrderConfirmationPage orderConfirmationPage=paymentConfirmationPage.placeOrder();	
 		String actualOrderNum=orderConfirmationPage.getOrderNum();
-
-	//	String actualOrderNum=driver.findElement(By.xpath("//label[@class='ng-star-inserted']")).getText();	
 		Assert.assertEquals(actualOrderNum, OrderNumber);
 		driver.close();
 	}
-
+	
 }

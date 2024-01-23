@@ -26,11 +26,14 @@ public class LandingPage
 	private WebElement btn_Login;
 	
 	
-	public void login(String username, String Password)
+	public ProductCateloguePage login(String username, String Password)
 	{
 		txt_Username.sendKeys(username);
 		txt_Password.sendKeys(Password);
 		btn_Login.click();
+		
+		ProductCateloguePage productCateloguePage=new ProductCateloguePage(driver);
+		return productCateloguePage;
 	}
 	
 	public void goTo()

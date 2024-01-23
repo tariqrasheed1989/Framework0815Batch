@@ -11,6 +11,8 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import PageObjects.CartPage;
+
 public class AbstractComponents {
 	
 	WebDriver driver;
@@ -54,9 +56,12 @@ public class AbstractComponents {
 		js.executeScript("arguments[0].click();", element);
 	}
 	
-	public void goToCart()
+	public CartPage goToCart()
 	{
 		Cart.click();
+		
+		CartPage cartPage=new CartPage(driver);
+		return cartPage;
 	}
 	
 	public void clickElement(WebElement element,String ElementName) {
