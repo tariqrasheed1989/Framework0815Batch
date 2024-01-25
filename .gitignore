@@ -1,0 +1,4 @@
+test-output/Suite/
+test-output/junitreports/TEST-Tests.ErrorValidation.xml
+test-output/old/ParallelSuite/
+test-output/old/Suite/

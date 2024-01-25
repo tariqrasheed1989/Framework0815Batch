@@ -33,7 +33,10 @@ public class CartPage extends AbstractComponents{
 	}
 	
 	public String getOrderNum() {		
-		return OrderNumber.getText();		
+		
+		String order=OrderNumber.getText();
+		String text=filterText(order, "#");
+		return text;
 	}
 	
 	public PaymentConfirmationPage checkout() {

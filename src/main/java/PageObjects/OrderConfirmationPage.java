@@ -21,7 +21,7 @@ public class OrderConfirmationPage extends AbstractComponents{
 	
 	public String getOrderNum()
 	{
-		return OrderNum.getText();
+		return filterText(OrderNum.getText(), " | ");
 	}
 
 }

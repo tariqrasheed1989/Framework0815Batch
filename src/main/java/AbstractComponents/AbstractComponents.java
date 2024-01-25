@@ -73,5 +73,10 @@ public class AbstractComponents {
 			System.out.println("Unable to click "+ElementName+" through UI. So clicked using Javascript");
 		}
 	}
+	
+	public String filterText(String input, String delimeter) {//#6581ca399fd99c85e8ee7f45
+		
+		return input.split(delimeter)[1].trim();
+	}
 
 }

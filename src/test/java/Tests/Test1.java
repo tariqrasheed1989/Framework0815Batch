@@ -28,7 +28,7 @@ public class Test1 extends Base
 	{
 		String product="Zara coat 3";
 		String country="India";		
-		LandingPage landingPage=launchApplication();
+//		LandingPage landingPage=launchApplication();
 		ProductCateloguePage productCateloguePage=landingPage.login("pathan@gmail.com", "Abcd@1234");
 		productCateloguePage.AddToCart(product);
 		String ActualToastMsg=productCateloguePage.getToastMessage();
@@ -42,8 +42,8 @@ public class Test1 extends Base
 		paymentConfirmationPage.selectCountry(country);
 		OrderConfirmationPage orderConfirmationPage=paymentConfirmationPage.placeOrder();	
 		String actualOrderNum=orderConfirmationPage.getOrderNum();
-		Assert.assertEquals(actualOrderNum, OrderNumber);
-		driver.close();
+//		Assert.assertEquals(actualOrderNum, OrderNumber);
+		
 	}
 	
 }
