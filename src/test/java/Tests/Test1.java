@@ -12,6 +12,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import PageObjects.CartPage;
@@ -23,13 +24,13 @@ import testBase.Base;
 
 public class Test1 extends Base
 {
-	@Test
-	public void PlaceOrder() throws IOException 
+	@Test(dataProvider = "getData")
+	public void PlaceOrder(String username, String password, String product) throws IOException 
 	{
-		String product="Zara coat 3";
+		//String product="Zara coat 3";
 		String country="India";		
 //		LandingPage landingPage=launchApplication();
-		ProductCateloguePage productCateloguePage=landingPage.login("pathan@gmail.com", "Abcd@1234");
+		ProductCateloguePage productCateloguePage=landingPage.login(username, password);
 		productCateloguePage.AddToCart(product);
 		String ActualToastMsg=productCateloguePage.getToastMessage();
 		Assert.assertEquals(ActualToastMsg, "Product Added To Cart");
@@ -44,6 +45,13 @@ public class Test1 extends Base
 		String actualOrderNum=orderConfirmationPage.getOrderNum();
 //		Assert.assertEquals(actualOrderNum, OrderNumber);
 		
+	}
+	
+	@DataProvider
+	public String[][] getData() {
+		
+		String[][] dataSet= {{"pathan@gmail.com","Abcd@1234","ADIDAS ORIGINAL"},{"sunil3001@gmail.com","India@123","Zara coat 3"}};
+		return dataSet;
 	}
 	
 }
